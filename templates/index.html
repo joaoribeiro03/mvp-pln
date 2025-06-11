@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Upload CSV para Análise de Sentimentos</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background: #f7f7f7; }
+        h1 { color: #2c6e91; }
+        form { background: #fff; padding: 20px; border-radius: 6px; box-shadow: 0 0 10px #ccc; }
+        input[type=file] { display: block; margin-bottom: 15px; }
+        button { background: #2c6e91; color: #fff; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #245a73; }
+        .error { color: #f44336; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <h1>Análise de Sentimentos</h1>
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    <form method="POST" enctype="multipart/form-data">
+        <label for="file">Escolha um arquivo CSV com comentários:</label>
+        <input type="file" name="file" id="file" required accept=".csv" />
+        <button type="submit">Analisar</button>
+    </form>
+</body>
+</html>

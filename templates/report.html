@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Relatório de Análise de Comentários</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #fff; color: #333; }
+        h1 { color: #2c6e91; border-bottom: 3px solid #2c6e91; padding-bottom: 10px; }
+        h2 { background: #f0f0f0; padding: 10px; border-left: 6px solid #2c6e91; margin-top: 30px; }
+        .positive { border-left-color: #4CAF50; color: #4CAF50; }
+        .negative { border-left-color: #F44336; color: #F44336; }
+        .metrics { display: flex; justify-content: space-around; margin-top: 20px; }
+        .metric { text-align: center; padding: 10px 20px; border-radius: 6px; background: #f0f0f0; box-shadow: 1px 1px 5px #ddd; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background: #2c6e91; color: white; }
+        ul { margin-top: 0; }
+        footer { text-align: center; font-size: 0.9em; color: #999; margin-top: 40px; }
+        a { text-decoration: none; color: #2c6e91; }
+    </style>
+</head>
+<body>
+    <h1>Relatório de Análise de Comentários</h1>
+    <p>Gerado em: {{ pd_timestamp }}</p>
+
+    <div class="metrics">
+        <div class="metric positive">
+            <h3>Positivos</h3>
+            <p>{{ positive_count }} ({{ "%.1f"|format(positive_pct) }}%)</p>
+        </div>
+        <div class="metric">
+            <h3>Neutros</h3>
+            <p>{{ neutral_count }} ({{ "%.1f"|format(neutral_pct) }}%)</p>
+        </div>
+        <div class="metric negative">
+            <h3>Negativos</h3>
+            <p>{{ negative_count }} ({{ "%.1f"|format(negative_pct) }}%)</p>
+        </div>
+    </div>
+
+    <h2 class="positive">Pontos Fortes (≥ {{ POSITIVE_THRESHOLD }}% positivos e ≥ {{ MIN_MENTIONS }} menções)</h2>
+    {% if strengths %}
+    <table>
+        <thead>
+            <tr><th>Aspecto</th><th>% Positivo</th><th>Total Menções</th><th>Exemplos</th></tr>
+        </thead>
+        <tbody>
+            {% for aspect, ratios in strengths %}
+            <tr>
+                <td>{{ aspect }}</td>
+                <td>{{ "%.0f"|format(ratios.positive_ratio * 100) }}%</td>
+                <td>{{ ratios.total_mentions }}</td>
+                <td>{{ format_examples(aspect, "positive")|safe }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Nenhum ponto forte encontrado com os critérios definidos.</p>
+    {% endif %}
+
+    <h2 class="negative">Pontos Fracos (≥ {{ NEGATIVE_THRESHOLD }}% negativos e ≥ {{ MIN_MENTIONS }} menções)</h2>
+    {% if weaknesses %}
+    <table>
+        <thead>
+            <tr><th>Aspecto</th><th>% Negativo</th><th>Total Menções</th><th>Exemplos</th></tr>
+        </thead>
+        <tbody>
+            {% for aspect, ratios in weaknesses %}
+            <tr>
+                <td>{{ aspect }}</td>
+                <td>{{ "%.0f"|format(ratios.negative_ratio * 100) }}%</td>
+                <td>{{ ratios.total_mentions }}</td>
+                <td>{{ format_examples(aspect, "negative")|safe }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Nenhum ponto fraco encontrado com os critérios definidos.</p>
+    {% endif %}
+
+    <footer><a href="{{ url_for('index') }}">&larr; Fazer nova análise</a></footer>
+</body>
+</html>
