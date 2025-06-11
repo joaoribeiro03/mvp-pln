@@ -1,4 +1,5 @@
-Bruno Monteiro, 
+Bruno Monteiro, João Lucas, Eberte de Souza e Caique Viana
+
 🧠 Análise de Sentimentos e Aspectos em Comentários
 Este projeto realiza uma análise automatizada de sentimentos e extração de aspectos em comentários em português, gerando um relatório interativo em HTML. Ele utiliza transformers, spaCy, e NLTK para fornecer insights sobre os pontos fortes e fracos percebidos nos comentários.
 
